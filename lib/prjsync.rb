@@ -1,1 +1,1 @@
-require 'prjsync/prjfileextractor'
+require 'prjsync/prjfile'
