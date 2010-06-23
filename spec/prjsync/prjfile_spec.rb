@@ -14,10 +14,15 @@ module Prjsync
     </Project>
 eos
 
+    before :all do
+      # write str to file
+      @file = ""
+    end
+
     describe "extract" do
       it "extracts all included files" do
         files = []
-        extractor = Prjsync::Prjfile.new( str )
+        extractor = Prjsync::Prjfile.new( @file )
         extractor.extract do |f| 
           files << f
         end
@@ -29,15 +34,20 @@ eos
 
     describe "add" do
       it "adds the file to the project file" do
-        extractor = Prjsync::Prjfile.new( str )
+        extractor = Prjsync::Prjfile.new( @file )
         extractor.add( 'Test\Add\File.cs' )
         # how do I test that it added?
+        extractor.save
+
+        doc = Nokogiri::XML( @file )
+        val = doc.xpath('//xmlns:Compile/@Include["Test\Add\File.cs"]')
+        val.should != nil
       end
     end
 
     describe "remove" do
       it "removes the file from the project file" do
-        extractor = Prjsync::Prjfile.new( str )
+        extractor = Prjsync::Prjfile.new( @file )
         extractor.remove( 'Hot\dog.dll' )
         # how do I test that it removed?
       end
