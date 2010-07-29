@@ -7,7 +7,7 @@ module Prjsync
       @doc = Nokogiri::XML( xml )
     end
     def extract
-      @doc.xpath("//xmlns:Compile/@Include").each do |f|
+      @doc.xpath( '//xmlns:Compile/@Include' ).each do |f|
         yield f.value
       end
     end
