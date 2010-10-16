@@ -48,8 +48,12 @@ eos
     describe "remove" do
       it "removes the file from the project file" do
         prjFile = Prjsync::Prjfile.new( File.open( @file, 'r' ) )
-        prjFile.remove( 'Hot\dog.dll' )
-        # how do I test that it removed?
+        prjFile.remove( "Hot\\Dogs.dll" )
+
+        doc = Nokogiri::XML( prjFile.text )
+        val = doc.xpath( '//xmlns:Compile[@Include = "Hot\\Dogs.dll"]')
+
+        val.length.should == 0
       end
     end
   end

@@ -23,5 +23,11 @@ module Prjsync
     def text
       @doc.to_xml
     end
+
+    def remove str
+      xp = "//xmlns:Compile[@Include = \"#{str}\"]"
+      n = @doc.xpath( xp )
+      n.remove
+    end
   end
 end
