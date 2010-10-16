@@ -40,9 +40,8 @@ eos
         prjFile.add( 'Test\Add\File.cs' )
         
         doc = Nokogiri::XML( prjFile.text )
-        val = doc.xpath('//xmlns:Compile/@Include["Test\Add\File.cs"]')
-        puts val
-        val.should != nil
+        val = doc.xpath('//xmlns:Compile[@Include = "Test\Add\File.cs"]')
+        val.should_not be_nil
       end
     end
 
