@@ -17,15 +17,15 @@ eos
 
     before :all do
       # write str to file
-      @file = Dir.tmpdir + File::SEPARATOR + "in.xml"
-      File.open( @file, 'w' ) { |f| f.write( str ) }
+      file = Dir.tmpdir + File::SEPARATOR + "in.xml"
+      File.open( file, 'w' ) { |f| f.write( str ) }
+      @prjFile = Prjsync::Prjfile.new( File.open( file, 'r' ) )
     end
 
     describe "extract" do
       it "extracts all included files" do
         files = []
-        prjFile = Prjsync::Prjfile.new( File.open( @file, 'r' ) )
-        prjFile.extract do |f| 
+        @prjFile.extract do |f| 
           files << f
         end
 
@@ -36,23 +36,22 @@ eos
 
     describe "add" do
       it "adds the file to the project file" do
-        prjFile = Prjsync::Prjfile.new( File.open( @file, 'r' ) )
-        prjFile.add( 'Test\Add\File.cs' )
+        testFile = 'Test\Add\File.cs'
+        @prjFile.add( testFile )
         
-        doc = Nokogiri::XML( prjFile.text )
-        val = doc.xpath('//xmlns:Compile[@Include = "Test\Add\File.cs"]')
+        doc = Nokogiri::XML( @prjFile.text )
+        val = doc.xpath("//xmlns:Compile[@Include = \"#{testFile}\"]")
         val.should_not be_nil
       end
     end
 
     describe "remove" do
       it "removes the file from the project file" do
-        prjFile = Prjsync::Prjfile.new( File.open( @file, 'r' ) )
-        prjFile.remove( "Hot\\Dogs.dll" )
+        testFile = "Hot\\Dogs.dll"
+        @prjFile.remove( testFile )
 
-        doc = Nokogiri::XML( prjFile.text )
-        val = doc.xpath( '//xmlns:Compile[@Include = "Hot\\Dogs.dll"]')
-
+        doc = Nokogiri::XML( @prjFile.text )
+        val = doc.xpath( "//xmlns:Compile[@Include = \"#{testFile}\"]")
         val.length.should == 0
       end
     end
