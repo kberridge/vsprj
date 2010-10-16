@@ -24,8 +24,8 @@ eos
     describe "extract" do
       it "extracts all included files" do
         files = []
-        extractor = Prjsync::Prjfile.new( File.open( @file, 'r' ) )
-        extractor.extract do |f| 
+        prjFile = Prjsync::Prjfile.new( File.open( @file, 'r' ) )
+        prjFile.extract do |f| 
           files << f
         end
 
@@ -36,21 +36,20 @@ eos
 
     describe "add" do
       it "adds the file to the project file" do
-        extractor = Prjsync::Prjfile.new( @file )
-        extractor.add( 'Test\Add\File.cs' )
-        # how do I test that it added?
-        extractor.save
-
-        doc = Nokogiri::XML( @file )
+        prjFile = Prjsync::Prjfile.new( File.open( @file, 'r' ) )
+        prjFile.add( 'Test\Add\File.cs' )
+        
+        doc = Nokogiri::XML( prjFile.text )
         val = doc.xpath('//xmlns:Compile/@Include["Test\Add\File.cs"]')
+        puts val
         val.should != nil
       end
     end
 
     describe "remove" do
       it "removes the file from the project file" do
-        extractor = Prjsync::Prjfile.new( @file )
-        extractor.remove( 'Hot\dog.dll' )
+        prjFile = Prjsync::Prjfile.new( File.open( @file, 'r' ) )
+        prjFile.remove( 'Hot\dog.dll' )
         # how do I test that it removed?
       end
     end
