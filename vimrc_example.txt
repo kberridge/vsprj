@@ -1,0 +1,4 @@
+function! PrjAdder()
+  exec 'silent !prjadder "'.expand('%:p').'"'
+endfunction
+map <leader>a :call PrjAdder()<CR>
