@@ -1,4 +1,4 @@
-function! PrjAdder()
-  exec 'silent !prjadder "'.expand('%:p').'"'
+function! VsPrjAdd()
+  exec 'silent !vsprj "'.expand('%:p').'"'
 endfunction
-map <leader>a :call PrjAdder()<CR>
+map <leader>a :call VsPrjAdd()<CR>
