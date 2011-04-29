@@ -14,7 +14,7 @@ describe Prjfile do
 </Project>
 eos
 
-  before :all do
+  before :each do
     # write str to file
     file = Dir.tmpdir + File::SEPARATOR + "in.xml"
     File.open( file, 'w' ) { |f| f.write( str ) }
@@ -33,6 +33,18 @@ eos
     end
   end
 
+  describe "contains?" do
+    it "finds existing files" do
+      r = @prjFile.contains? 'Folder\Other.js'
+      r.should be_true
+    end
+
+    it "does not find missing files" do
+      r = @prjFile.contains? 'Something\not\there.cs'
+      r.should be_false
+    end
+  end
+
   describe "add" do
     it "adds the file to the project file" do
       testFile = 'Test\Add\File.cs'
@@ -40,7 +52,17 @@ eos
       
       doc = Nokogiri::XML( @prjFile.text )
       val = doc.xpath("//xmlns:Compile[@Include = \"#{testFile}\"]")
-      val.should_not be_nil
+      val.should_not be val.empty?
+    end
+
+    it "doesn't add duplicates" do
+      testFile = 'Test\Add\File.cs'
+      @prjFile.add(testFile)
+      @prjFile.add(testFile)
+
+      doc = Nokogiri::XML(@prjFile.text)
+      val = doc.xpath("//xmlns:Compile[@Include = \"#{testFile}\"]")
+      val.length.should == 1
     end
   end
 
