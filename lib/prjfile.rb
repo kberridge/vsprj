@@ -12,12 +12,12 @@ class Prjfile
     end
   end
 
-  def add str
-    return if contains? str
+  def add file
+    return if contains? file
 
     ig = @doc.xpath('//xmlns:ItemGroup')[0]
     compile = Nokogiri::XML::Node.new('Compile', @doc)
-    compile['Include'] = str
+    compile['Include'] = file
     ig.add_child(compile)
   end
 
@@ -25,14 +25,14 @@ class Prjfile
     @doc.to_xml
   end
 
-  def remove str
-    xp = "//xmlns:Compile[@Include = \"#{str}\"]"
+  def remove file
+    xp = "//xmlns:Compile[@Include = \"#{file}\"]"
     n = @doc.xpath(xp)
     n.remove
   end
 
-  def contains? str
-    xp = "//xmlns:Compile[@Include = \"#{str}\"]"
+  def contains? file
+    xp = "//xmlns:Compile[@Include = \"#{file}\"]"
     n = @doc.xpath(xp)
     !n.empty?
   end
