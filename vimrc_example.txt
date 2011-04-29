@@ -1,4 +1,4 @@
 function! VsPrjAdd()
-  exec 'silent !vsprj "'.expand('%:p').'"'
+  exec 'silent !vsprj add "'.expand('%:p').'"'
 endfunction
 map <leader>a :call VsPrjAdd()<CR>
