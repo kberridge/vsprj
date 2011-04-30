@@ -46,11 +46,11 @@ class CommandRunner
   end
 
   def build_relative_windows_path(prjfile_name, file)
-    rel = make_relative(prjfile_name, file)
+    rel = make_relative(file, prjfile_name)
     convert_to_windows_path(rel)
   end
 
-  def make_relative(prjfile_name, file)
+  def make_relative(file, prjfile_name)
     prjfile_dir = File.dirname prjfile_name
     r = Regexp.new "#{prjfile_dir}/(.*)"
     file =~ r
@@ -58,6 +58,6 @@ class CommandRunner
   end
 
   def convert_to_windows_path(file)
-    file.gsub('/','\\') 
+    file.gsub('/', '\\') 
   end
 end
