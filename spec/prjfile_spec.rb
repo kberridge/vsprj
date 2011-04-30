@@ -17,8 +17,8 @@ eos
   before :each do
     # write str to file
     file = Dir.tmpdir + File::SEPARATOR + "in.xml"
-    File.open( file, 'w' ) { |f| f.write( str ) }
-    @prjFile = Prjfile.new( File.open( file, 'r' ) )
+    File.open(file, 'w') { |f| f.write( str ) }
+    @prjFile = Prjfile.new(File.open(file, 'r'))
   end
 
   describe "extract" do
@@ -28,8 +28,8 @@ eos
         files << f
       end
 
-      files.should == [ 'Folder\Path\File.cs', 'Folder\Other.js', 
-        'More\Tests.png', 'Hot\Dogs.dll' ]
+      files.should == ['Folder\Path\File.cs', 'Folder\Other.js', 
+        'More\Tests.png', 'Hot\Dogs.dll']
     end
   end
 
@@ -48,9 +48,9 @@ eos
   describe "add" do
     it "adds the file to the project file" do
       testFile = 'Test\Add\File.cs'
-      @prjFile.add( testFile )
+      @prjFile.add(testFile)
       
-      doc = Nokogiri::XML( @prjFile.text )
+      doc = Nokogiri::XML(@prjFile.text)
       val = doc.xpath("//xmlns:Compile[@Include = \"#{testFile}\"]")
       val.should_not be val.empty?
     end
@@ -69,10 +69,10 @@ eos
   describe "remove" do
     it "removes the file from the project file" do
       testFile = "Hot\\Dogs.dll"
-      @prjFile.remove( testFile )
+      @prjFile.remove(testFile)
 
-      doc = Nokogiri::XML( @prjFile.text )
-      val = doc.xpath( "//xmlns:Compile[@Include = \"#{testFile}\"]")
+      doc = Nokogiri::XML(@prjFile.text)
+      val = doc.xpath("//xmlns:Compile[@Include = \"#{testFile}\"]")
       val.length.should == 0
     end
 
