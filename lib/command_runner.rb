@@ -13,19 +13,21 @@ class CommandRunner
   end
 
   def add(file)
+    file = File.expand_path file
     prjfile_name, prjfile = find_prjfile file
     return unless prjfile
 
-    prjfile.add(file)
+    prjfile.add(build_relative_windows_path(prjfile_name, file))
 
     write_prjfile(prjfile_name, prjfile)
   end
 
   def remove(file)
+    file = File.expand_path file
     prjfile_name, prjfile = find_prjfile file
     return unless prjfile
     
-    prjfile.remove(file)
+    prjfile.remove(build_relative_windows_path(prjfile_name, file))
 
     write_prjfile(prjfile_name, prjfile)
   end
@@ -41,5 +43,21 @@ class CommandRunner
 
   def write_prjfile(file_name, prjfile)
     File.open(file_name, 'w') { |f| f.puts prjfile.text }
+  end
+
+  def build_relative_windows_path(prjfile_name, file)
+    rel = make_relative(prjfile_name, file)
+    convert_to_windows_path(rel)
+  end
+
+  def make_relative(prjfile_name, file)
+    prjfile_dir = File.dirname prjfile_name
+    r = Regexp.new "#{prjfile_dir}/(.*)"
+    file =~ r
+    $1
+  end
+
+  def convert_to_windows_path(file)
+    file.gsub('/','\\') 
   end
 end

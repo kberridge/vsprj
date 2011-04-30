@@ -8,9 +8,9 @@ describe PrjfileFinder do
     File.open('./prjsync/testA/myfile.csproj', 'w') { |f| f.puts 'Some file' }
   end
 
-  it "find file" do
+  it "finds file" do
     finder = PrjfileFinder.new
     found = finder.find_from './prjsync/testA/testB/fakefile.cs'
-    found.should match /.*\\prjsync\\testA\\myfile.csproj/
+    found.should match /.*\/prjsync\/testA\/myfile.csproj/
   end
 end 
