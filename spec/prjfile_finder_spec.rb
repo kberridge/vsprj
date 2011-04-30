@@ -13,4 +13,16 @@ describe PrjfileFinder do
     found = finder.find_from './prjsync/testA/testB/fakefile.cs'
     found.should match /.*\/prjsync\/testA\/myfile.csproj/
   end
+
+  it "returns nil if path does not exist" do
+    finder = PrjfileFinder.new
+    found = finder.find_from './nothing/to/find.cs'
+    found.should be_nil
+  end
+
+  it "returns nil if no prj file found" do
+    finder = PrjfileFinder.new
+    found = finder.find_from './prjsync/file.cs'
+    found.should be_nil
+  end
 end 
