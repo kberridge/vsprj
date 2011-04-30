@@ -75,5 +75,14 @@ eos
       val = doc.xpath( "//xmlns:Compile[@Include = \"#{testFile}\"]")
       val.length.should == 0
     end
+
+    it "doesn't fail if file isn't in prj file" do
+      testFile = 'Not\In\File.cs'
+      @prjFile.remove(testFile)
+
+      doc = Nokogiri::XML(@prjFile.text)
+      nodes = doc.xpath("//xmlns:Compile")
+      nodes.length.should == 4
+    end
   end
 end
