@@ -42,7 +42,8 @@ class CommandRunner
   end
 
   def write_prjfile(file_name, prjfile)
-    File.open(file_name, 'w') { |f| f.puts prjfile.text }
+    xml = prjfile.text
+    File.open(file_name, 'w') { |f| f.puts xml }
   end
 
   def build_relative_windows_path(prjfile_name, file)
