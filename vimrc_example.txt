@@ -2,3 +2,9 @@ function! VsPrjAdd()
   exec 'silent !vsprj add "'.expand('%:p').'"'
 endfunction
 map <leader>a :call VsPrjAdd()<CR>
+
+function! VsPrjRm()
+  exec 'silent !del '.expand('%:p')
+  exec 'silent !ruby ~/projects/vsprj/vsprj.rb remove "'.expand('%:p').'"'
+endfunction
+map <leader>r :call VsPrjRm()<CR>
